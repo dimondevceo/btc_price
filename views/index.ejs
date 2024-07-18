@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Price Tracker</title>
+    <link href="/styles/app.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Bitcoin Price Tracker</h1>
+        
+        <div class="bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
+            <div class="mb-4">
+                <h2 class="text-xl font-semibold text-gray-700">Current Price</h2>
+                <p class="text-3xl font-bold text-green-600" id="currentPrice">Loading...</p>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <h3 class="text-lg font-medium text-gray-600">Bid</h3>
+                    <p class="text-xl font-semibold text-blue-600" id="bidPrice">Loading...</p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-medium text-gray-600">Ask</h3>
+                    <p class="text-xl font-semibold text-red-600" id="askPrice">Loading...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center text-gray-600">
+            <p>Update Frequency: <%= UPDATE_FREQUENCY %>ms</p>
+            <p>Service Commission: <%= SERVICE_COMMISSION * 100 %>%</p>
+        </div>
+    </div>
+
+    <script>
+        const FREQUENCY = parseFloat('<%= UPDATE_FREQUENCY %>');
+
+        function updatePrice() {
+            fetch('/btc/usdt')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('currentPrice').textContent = `$${data.midPrice}`;
+                    document.getElementById('bidPrice').textContent = `$${data.bid}`;
+                    document.getElementById('askPrice').textContent = `$${data.ask}`;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        updatePrice();
+        setInterval(updatePrice, FREQUENCY);
+    </script>
+</body>
+</html>
