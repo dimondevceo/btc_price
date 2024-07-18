@@ -60,9 +60,9 @@ docker-compose up --build
 Example response from `/btc/usdt`:
 ```json
 {
-    "bid": "29997.00",
-    "ask": "30103.01",
-    "midPrice": "30050.01"
+    "bid":"64006.69",
+    "ask":"64019.50",
+    "midPrice":"64013.10"
 }
 ```
 
