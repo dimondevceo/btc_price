@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import bitcoinRoutes from './routes/bitcoinRoutes.js';
 import errorHandler from './utils/errorHandler.js';
-import bitcoinService from './services/bitcoinService.js';
+import { fetchBitcoinPrice } from './controllers/bitcoinController.js';
 import config from './config/config.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,7 +25,8 @@ const startServer = () => {
         console.log(`Service commission: ${config.SERVICE_COMMISSION * 100}%`);
     });
 
-    const intervalId = setInterval(() => bitcoinService.fetchBitcoinPrice(), config.UPDATE_FREQUENCY);
+    fetchBitcoinPrice();
+    const intervalId = setInterval(fetchBitcoinPrice, config.UPDATE_FREQUENCY);
 
     const gracefulShutdown = () => {
         console.log('Exiting...');
